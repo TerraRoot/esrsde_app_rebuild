@@ -78,6 +78,7 @@ podman run $security_opt $security_opt_sae --memory=$sae_memory_cont --memory-sw
  
  
 #stuff i ripped out that isn't needed for sae rebuild 
+
 #SRS_COMMON_SP_HOST="common-sp.esrs.emc.com"
 #PRODUCT_NAME="SCG"
 #IPV4_SUBNET="172.18.0.0"
@@ -86,12 +87,9 @@ podman run $security_opt $security_opt_sae --memory=$sae_memory_cont --memory-sw
 #bkp_platform_Config_File="/etc/podman/daemon_bkp.json"
 #SAE_REPO_NAME=sae_de
 #container_platform_sock="podman.sock"
-
 #    group_id=""
 #    network_opt=""
-
 #    podman_STORAGE_PATH=$(podman info | grep graphRoot: | awk -F: '{print $2}')
-
 #    platform_Config_File="/etc/containers/registries.conf"
 #    container_Config_File="/etc/containers/registries.conf"
 #    bkp_platform_Config_File="/etc/containers/registries.bkp.conf"
@@ -99,9 +97,5 @@ podman run $security_opt $security_opt_sae --memory=$sae_memory_cont --memory-sw
 #   HOST_CONFIG_FILE="-v /etc/containers/registries.conf:/etc/containers/registries.conf"
 #   platform_Config_Direcotry="/etc/containers"
 #   chmod 777 $host_platform_sock
-#$3 looks like we don't have a auot way to do so in orignal?
-
-
-#
 #volume_path=${volume_path%/*}
 #hostMount=$(echo $volume_path | awk -F'/saede_config' '{print $1}')
