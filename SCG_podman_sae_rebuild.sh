@@ -49,6 +49,7 @@ podman stop saede_app
 podman rm saede_app
 
 # don't know of a way right now to restore database for sae	
+# this bit is extracted from the podman install bin
 
 podman run $security_opt $security_opt_sae --memory=$sae_memory_cont --memory-swap="-1" --restart=always -v saede_data:$SAE_DATA_VOLUME \
 -v saede_logs:$SAE_LOG_VOLUME -v saede_config:$SAE_CONFIG_VOLUME \
@@ -59,8 +60,9 @@ podman run $security_opt $security_opt_sae --memory=$sae_memory_cont --memory-sw
 --device=/dev/mem:/dev/mem --network $SCG_BRIDGE   \
 -d -p 5700:5700 -p 5701:5701 -p 5702:5702 -p 5703:5703 -p 5704:5704 -p 5705:5705 -p 162:1162/udp -p 162:1162/tcp --cap-add=SYS_PTRACE --cap-add=SYS_RAWIO --cap-add=CAP_AUDIT_WRITE --cap-add=CAP_NET_BIND_SERVICE $pid_limit --name $SAE_CONTAINER_NAME $SAE_REPO_NAME:$SAE_REPO_TAG
 
-
-
+#todo
+#umm make this a script instead of a pile of notes and guesses.
+#probably test on a lab.
 
 
 [Yesterday 21:28] Wang, Daniel
@@ -73,8 +75,8 @@ podman run --security-opt label=disable --restart=always --ulimit core=-1:-1 --u
  
  
  
- 
- #SRS_COMMON_SP_HOST="common-sp.esrs.emc.com"
+#stuff i ripped out that isn't needed for sae rebuild 
+#SRS_COMMON_SP_HOST="common-sp.esrs.emc.com"
 #PRODUCT_NAME="SCG"
 #IPV4_SUBNET="172.18.0.0"
 #IPV6_SUBNET="fd00:d311:e3c:5c6::0"
