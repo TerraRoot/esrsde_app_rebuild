@@ -8,7 +8,6 @@ HostName=$(cat /etc/hostname)
 SAE_REPO_NAME=sae_de
 security_opt="--security-opt label=disable"
 security_opt_sae="--security-opt seccomp=${profile_file}"
-#file is one dir down from here? add /.. such hack
 profile_file="${volume_path}/../dockerprofile.json"
 pid_limit="--pids-limit=-1"
 sae_memory_cont="6.98492g"
@@ -21,6 +20,7 @@ ENVIRONMENT=$(podman exec -i esrsde-app cat /opt/esrsve/version/esrshost.conf | 
 MacAddress=$(podman exec -i esrsde-app cat /opt/esrsve/version/esrshost.conf | grep 'MacAddress' | cut -d'=' -f2)
 Version=$(podman exec -i esrsde-app cat /opt/esrsve/version/esrshost.conf | grep 'Version' | grep -v 'OSPatch' | cut -d'=' -f2)
 volume_path=$(podman volume inspect saede_config -f '{{ .Mountpoint }}')
+volume_path=${volume_path%/*}
 
   if [[ ! -z "$ip" && "$ip" != "${1#*[0-9].[0-9]}" ]]; then
       log "IPV4 enabled"
