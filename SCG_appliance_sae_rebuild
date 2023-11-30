@@ -1,0 +1,12 @@
+#!/bin/bash
+#container fucked? this will make it like new, ldap config and admin user password will have to be set again.
+#don't think i could call this an actual script, just paste the below commands
+
+docker stop saede-app
+docker rm saede-app
+docker volume prune
+systemctl start sae.docker.service
+docker start saede-app
+
+#notes
+#took one case a solid 30~40 minutes before the webui started working again, after restaring the host, webui was available in the sae container but not in the host..
