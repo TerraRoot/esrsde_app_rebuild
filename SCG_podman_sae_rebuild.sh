@@ -12,8 +12,6 @@ profile_file="${volume_path}/../dockerprofile.json"
 pid_limit="--pids-limit=-1"
 sae_memory_cont="6.98492g"
 Deployment_Type="podman"
-
-#not so happy about that delimiter
 SAE_REPO_TAG=$(podman images | grep sae_de | awk '{print $2}')
 HOST_IP=$(podman exec -i esrsde-app cat /opt/esrsve/version/esrshost.conf | grep 'IpAddress' | cut -d'=' -f2)
 ENVIRONMENT=$(podman exec -i esrsde-app cat /opt/esrsve/version/esrshost.conf | grep 'Environment' | cut -d'=' -f2)
