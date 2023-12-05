@@ -12,32 +12,14 @@ profile_file="${volume_path}/../dockerprofile.json"
 pid_limit="--pids-limit=-1"
 sae_memory_cont="6.98492g"
 Deployment_Type="podman"
-
-#not so happy about that delimiter
 SAE_REPO_TAG=$(podman images | grep sae_de | awk '{print $2}')
-HOST_IP=$(podman exec -i esrsde-app cat /opt/esrsve/version/esrshost.conf | grep 'IpAddress' | cut -d'=' -f2)
+HOSTIP=$(podman exec -i esrsde-app cat /opt/esrsve/version/esrshost.conf | grep 'IpAddress' | cut -d'=' -f2)
 ENVIRONMENT=$(podman exec -i esrsde-app cat /opt/esrsve/version/esrshost.conf | grep 'Environment' | cut -d'=' -f2)
 MacAddress=$(podman exec -i esrsde-app cat /opt/esrsve/version/esrshost.conf | grep 'MacAddress' | cut -d'=' -f2)
 Version=$(podman exec -i esrsde-app cat /opt/esrsve/version/esrshost.conf | grep 'Version' | grep -v 'OSPatch' | cut -d'=' -f2)
 volume_path=$(podman volume inspect saede_config -f '{{ .Mountpoint }}')
 volume_path=${volume_path%/*}
 
-  if [[ ! -z "$ip" && "$ip" != "${1#*[0-9].[0-9]}" ]]; then
-      log "IPV4 enabled"
-      HostIPv4Enabled=true
-  elif [[ ! -z "$ip" && "$ip" != "${1#*:[0-9a-fA-F]}" ]]; then
-      log "IPV6 enabled"
-      HostIPv6Enabled=true
-  fi
-
-    if ($HostIPv4Enabled) then
-        MacAddress=$(ip a s $NETIF4 | awk '/ether/ {print $2}')
-        HOSTIP=`ip -4 addr show dev $NETIF4 | grep inet | tr -s " " | cut -d" " -f3 | head -n 1|cut -d "/" -f1`
-    else
-        MacAddress=$(ip a s $NETIF6 | awk '/ether/ {print $2}')
-        HOSTIP=`ip -6 addr show dev $NETIF6 | grep inet | tr -s " " | cut -d" " -f3 | head -n 1|cut -d "/" -f1`
-    fi
-	
 eval $(cat /etc/os-release | grep -i PRETTY_NAME)
 if [ -n "`echo ${PRETTY_NAME} | grep -i 'Alpine Linux'`" ]; then
     TimeZone=$(ls -ltr /etc/localtime|awk '{print $NF}'|cut -d "/" -f4)
