@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#this has worked, case 179197082 if you need to check anything
+#this has worked, case 179197082 if you need to check
 
 echo script will backup and rebuild esrsde_app container, we should hope.
 echo create database backup
