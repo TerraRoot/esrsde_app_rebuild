@@ -14,7 +14,7 @@ sae_memory_cont="6.98492g"
 Deployment_Type="podman"
 
 #not so happy about that delimiter
-SAE_REPO_TAG=$(podman images | grep sae_de | cut -f 10 -d ' ')
+SAE_REPO_TAG=$(podman images | grep sae_de | awk '{print $2}')
 HOST_IP=$(podman exec -i esrsde-app cat /opt/esrsve/version/esrshost.conf | grep 'IpAddress' | cut -d'=' -f2)
 ENVIRONMENT=$(podman exec -i esrsde-app cat /opt/esrsve/version/esrshost.conf | grep 'Environment' | cut -d'=' -f2)
 MacAddress=$(podman exec -i esrsde-app cat /opt/esrsve/version/esrshost.conf | grep 'MacAddress' | cut -d'=' -f2)
