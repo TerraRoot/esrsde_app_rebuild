@@ -48,20 +48,21 @@ echo MacAddress$MacAddress
 echo Version $Version
 echo volume_path $volume_path
 
-echo podman run $security_opt $security_opt_sae --memory=$sae_memory_cont --memory-swap="-1" --restart=always -v saede_data:$SAE_DATA_VOLUME -v saede_logs:$SAE_LOG_VOLUME -v saede_config:$SAE_CONFIG_VOLUME --add-host linux.site:$HOSTIP --add-host podmanhost:$HOSTIP -v srssae:/shared -v /etc/hostname:/etc/hostname -v /etc/hosts:/etc/hosts:ro -e ESRS_ADMIN='admin' -e IP_ADDRESS=$HOSTIP -e TIME_ZONE=$TimeZone -e HYPERVISOR_TYPE="Container Platform - $Deployment_Type" -e VERSION=$Version -e OS='SUSE Linux Enterprise Server 15 SP5' -e ENVIRONMENT=$ENVIRONMENT -e HOSTNAME=$HostName -e MAC_ADDRESS=$MacAddress -e DEPLOYMENT_TYPE=$Deployment_Type --device=/dev/mem:/dev/mem --network $SCG_BRIDGE -d -p 5700:5700 -p 5701:5701 -p 5702:5702 -p 5703:5703 -p 5704:5704 -p 5705:5705 -p 162:1162/udp -p 162:1162/tcp --cap-add=SYS_PTRACE --cap-add=SYS_RAWIO --cap-add=CAP_AUDIT_WRITE --cap-add=CAP_NET_BIND_SERVICE $pid_limit --name $SAE_CONTAINER_NAME $SAE_REPO_NAME:$SAE_REPO_TAG
-
+echo podman run $security_opt $security_opt_sae --memory=$sae_memory_cont --memory-swap="-1" --restart=always -v saede_data:$SAE_DATA_VOLUME -v saede_logs:$SAE_LOG_VOLUME -v saede_config:$SAE_CONFIG_VOLUME --add-host linux.site:$HOSTIP --add-host dockerhost:$HOSTIP -v srssae:/shared -v /etc/hostname:/etc/hostname -v /etc/hosts:/etc/hosts:ro -e ESRS_ADMIN='admin' -e IP_ADDRESS=$HOSTIP -e TIME_ZONE=$TimeZone -e HYPERVISOR_TYPE="Container Platform - $Deployment_Type" -e VERSION=$Version -e OS='SUSE Linux Enterprise Server 15 SP5' -e ENVIRONMENT=$ENVIRONMENT -e HOSTNAME=$HostName -e MAC_ADDRESS=$MacAddress -e DEPLOYMENT_TYPE=$Deployment_Type --device=/dev/mem:/dev/mem --network $SCG_BRIDGE -d -p 5700:5700 -p 5701:5701 -p 5702:5702 -p 5703:5703 -p 5704:5704 -p 5705:5705 -p 162:1162/udp -p 162:1162/tcp --cap-add=SYS_PTRACE --cap-add=SYS_RAWIO --cap-add=CAP_AUDIT_WRITE --cap-add=CAP_NET_BIND_SERVICE $pid_limit --name $SAE_CONTAINER_NAME $SAE_REPO_NAME:$SAE_REPO_TAG
+#echo ignores " and ' 
 echo if the above is ok continue?
 y/n
 
 # blow away old container
 
 podman stop saede_app
+#must be in stopped state before next command
 podman rm saede_app
 
 # don't know of a way right now to restore database for sae, probably uses the data volume	
 # this bit is extracted from the podman install bin
 
-podman run $security_opt $security_opt_sae --memory=$sae_memory_cont --memory-swap="-1" --restart=always -v saede_data:$SAE_DATA_VOLUME -v saede_logs:$SAE_LOG_VOLUME -v saede_config:$SAE_CONFIG_VOLUME --add-host linux.site:$HOSTIP --add-host podmanhost:$HOSTIP -v srssae:/shared -v /etc/hostname:/etc/hostname -v /etc/hosts:/etc/hosts:ro -e ESRS_ADMIN='admin' -e IP_ADDRESS=$HOSTIP -e TIME_ZONE=$TimeZone -e HYPERVISOR_TYPE="Container Platform - $Deployment_Type" -e VERSION=$Version -e OS='SUSE Linux Enterprise Server 15 SP5' -e ENVIRONMENT=$ENVIRONMENT -e HOSTNAME=$HostName -e MAC_ADDRESS=$MacAddress -e DEPLOYMENT_TYPE=$Deployment_Type --device=/dev/mem:/dev/mem --network $SCG_BRIDGE -d -p 5700:5700 -p 5701:5701 -p 5702:5702 -p 5703:5703 -p 5704:5704 -p 5705:5705 -p 162:1162/udp -p 162:1162/tcp --cap-add=SYS_PTRACE --cap-add=SYS_RAWIO --cap-add=CAP_AUDIT_WRITE --cap-add=CAP_NET_BIND_SERVICE $pid_limit --name $SAE_CONTAINER_NAME $SAE_REPO_NAME:$SAE_REPO_TAG
+podman run $security_opt $security_opt_sae --memory=$sae_memory_cont --memory-swap="-1" --restart=always -v saede_data:$SAE_DATA_VOLUME -v saede_logs:$SAE_LOG_VOLUME -v saede_config:$SAE_CONFIG_VOLUME --add-host linux.site:$HOSTIP --add-host dockerhost:$HOSTIP -v srssae:/shared -v /etc/hostname:/etc/hostname -v /etc/hosts:/etc/hosts:ro -e ESRS_ADMIN='admin' -e IP_ADDRESS=$HOSTIP -e TIME_ZONE=$TimeZone -e HYPERVISOR_TYPE="Container Platform - $Deployment_Type" -e VERSION=$Version -e OS='SUSE Linux Enterprise Server 15 SP5' -e ENVIRONMENT=$ENVIRONMENT -e HOSTNAME=$HostName -e MAC_ADDRESS=$MacAddress -e DEPLOYMENT_TYPE=$Deployment_Type --device=/dev/mem:/dev/mem --network $SCG_BRIDGE -d -p 5700:5700 -p 5701:5701 -p 5702:5702 -p 5703:5703 -p 5704:5704 -p 5705:5705 -p 162:1162/udp -p 162:1162/tcp --cap-add=SYS_PTRACE --cap-add=SYS_RAWIO --cap-add=CAP_AUDIT_WRITE --cap-add=CAP_NET_BIND_SERVICE $pid_limit --name $SAE_CONTAINER_NAME $SAE_REPO_NAME:$SAE_REPO_TAG
 
 #todo
 #umm make this a script instead of a pile of notes and guesses.
