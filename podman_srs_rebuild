@@ -1,3 +1,83 @@
 #!/bin/bash
 
 #notes:
+
+cat srs.docker.service
+[Unit]
+Description=SRS Container Service
+Requires=docker.service network-online.target
+After=multi-user.target graphical.target docker.service network-online.target
+
+[Service]
+Type=simple
+RestartSec=1min
+Restart=on-failure
+WorkingDirectory=/opt/esrsve/container-orchestration
+Environment= COMPOSE_FILE=cfg.yml:srs-service-cfg.yml
+ExecStartPre=/bin/sh preAndPostCallback.sh SRS PRE
+ExecStartPre=-/usr/bin/docker-compose stop esrsde-app
+ExecStartPre=-/usr/bin/docker-compose rm -f esrsde-app
+ExecStart=/usr/bin/docker-compose --env-file /etc/esrshost.conf up -d esrsde-app
+#Give time for containers to Initialize.
+ExecStartPost=/usr/bin/sleep 40s
+ExecStartPost=/bin/sh preAndPostCallback.sh SRS POST
+ExecStartPost=/bin/touch /var/lib/YaST2/scg_up
+
+[Install]
+WantedBy=multi-user.target
+
+cat /opt/esrsve/container-orchestration/srs-service-cfg.yml
+
+version: '3.7'
+
+services:
+  esrsde-app:
+    image: "srs:latest"
+    group_add:
+      - 492
+    deploy:
+      resources:
+        limits:
+          memory: 7.5G
+    container_name: esrsde-app
+    restart: always
+    hostname: esrsde-app
+    volumes:
+      - srssae:/shared
+      - /etc/hypervisorType:/etc/hypervisorType
+      - /etc/hostname:/etc/hostname
+      - /etc/esrsadmin.conf:/opt/esrsve/version/esrsadmin.conf
+      - /etc/esrshost.conf:/opt/esrsve/version/esrshost.conf
+      - esrsconfig:/esrsve_config
+      - esrslog:/esrsve_log
+      - saede_logs:/sae_logs
+      - /var/log/esrs:/esrsve_log/hostlog
+      - /usr/bin/docker:/opt/esrsve/esrsupdate/docker
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - "21:4021"
+      - "5400-5413:5400-5413"
+      - "443:4443"
+      - "9443:9443"
+      - "8443:8443"
+    extra_hosts:
+      - dockerhost:${IpAddress}
+      - linux.site:${IpAddress}
+    sysctls:
+      - net.ipv6.conf.all.disable_ipv6=1
+      - net.ipv4.conf.default.forwarding=1
+      - net.ipv4.conf.all.forwarding=1
+
+volumes:
+  srssae:
+    driver: local
+    name: srssae
+  esrsconfig:
+    driver: local
+    name: esrsconfig
+  esrslog:
+    driver: local
+    name: esrslog
+  saede_logs:
+    driver: local
+    name: saede_logs
